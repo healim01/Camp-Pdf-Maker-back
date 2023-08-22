@@ -23,6 +23,9 @@ public class Camp {
     private String campSeason;
     private String campProf;
 
+    private String startDate;
+    private String endDate;
+
     @OneToMany(mappedBy = "camp")
     private List<Student> studentList;
 }
