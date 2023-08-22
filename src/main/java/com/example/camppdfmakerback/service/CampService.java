@@ -4,7 +4,8 @@ import com.example.camppdfmakerback.domain.Camp;
 import com.example.camppdfmakerback.domain.Student;
 import com.example.camppdfmakerback.dto.request.CampRequest;
 import com.example.camppdfmakerback.dto.request.StudentRequest;
-import com.example.camppdfmakerback.dto.response.CampResponse;
+import com.example.camppdfmakerback.dto.response.CampAllResponse;
+import com.example.camppdfmakerback.dto.response.CampOneResponse;
 import com.example.camppdfmakerback.repository.CampRepository;
 import com.example.camppdfmakerback.repository.StudentRepository;
 import jakarta.transaction.Transactional;
@@ -45,15 +46,23 @@ public class CampService {
         return camp;
     }
 
-    public List<Camp> findAll() {
-        return campRepository.findAll();
+
+//    public List<CampAllResponse> findAll() {
+//        List<Camp> camplist = campRepository.findAll();
+//        return new CampAllResponse(camp);
+//    }
+    public List<CampAllResponse> findAll() {
+        List<Camp> camplist = campRepository.findAll();
+        List<CampAllResponse> campResponses = CampAllResponse.createFromCampList(camplist);
+        return campResponses;
     }
 
-    public CampResponse findOne(String id) {
+
+    public CampOneResponse findOne(String id) {
         Camp camp = campRepository
                 .findById(Long.parseLong(id))
                 .orElseThrow();
-        return new CampResponse(camp);
+        return new CampOneResponse(camp);
     }
 
 //    public List<Student>
