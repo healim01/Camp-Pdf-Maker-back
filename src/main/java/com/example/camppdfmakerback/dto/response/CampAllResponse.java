@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class CampAllResponse {
+    private Long campId;
     private String campName;
     private String campImg;
     private String campSeason;
@@ -17,6 +18,7 @@ public class CampAllResponse {
     private String endDate;
 
     public CampAllResponse(Camp camp) {
+        campId = camp.getCamp_id();
         campName = camp.getCampName();
         campImg = camp.getCampImg();
         campProf = camp.getCampProf();

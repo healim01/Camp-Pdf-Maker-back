@@ -1,13 +1,17 @@
 package com.example.camppdfmakerback.service;
 
 import com.example.camppdfmakerback.domain.Camp;
-import com.example.camppdfmakerback.domain.Student;
+//import com.example.camppdfmakerback.domain.Student;
+import com.example.camppdfmakerback.domain.Member;
+import com.example.camppdfmakerback.domain.Takes;
 import com.example.camppdfmakerback.dto.request.CampRequest;
-import com.example.camppdfmakerback.dto.request.StudentRequest;
+//import com.example.camppdfmakerback.dto.request.StudentRequest;
 import com.example.camppdfmakerback.dto.response.CampAllResponse;
 import com.example.camppdfmakerback.dto.response.CampOneResponse;
 import com.example.camppdfmakerback.repository.CampRepository;
-import com.example.camppdfmakerback.repository.StudentRepository;
+//import com.example.camppdfmakerback.repository.StudentRepository;
+import com.example.camppdfmakerback.repository.MemberRepository;
+import com.example.camppdfmakerback.repository.TakesRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +25,11 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Transactional
 public class CampService {
+
+    private final MemberRepository memberRepository;
     private final CampRepository campRepository;
-    private final StudentRepository studentRepository;
+    private final TakesRepository takesRepository;
+//    private final StudentRepository studentRepository;
 
     public Camp create(CampRequest campRequest){
         Camp camp = Camp.builder()
@@ -33,16 +40,16 @@ public class CampService {
                 .startDate(campRequest.getStartDate())
                 .endDate(campRequest.getEndDate())
                 .build();
-        List<StudentRequest> studentList = campRequest.getStudentList();
-        for (StudentRequest studentRequest : studentList) {
-            Student s = Student.builder()
-                    .camp(camp)
-                    .studentId(studentRequest.getStudentId())
-                    .studentName(studentRequest.getStudentName())
-                    .studentDept(studentRequest.getStudentDept())
-                    .build();
-            studentRepository.save(s);
-        }
+//        List<StudentRequest> studentList = campRequest.getStudentList();
+//        for (StudentRequest studentRequest : studentList) {
+//            Student s = Student.builder()
+//                    .camp(camp)
+//                    .studentId(studentRequest.getStudentId())
+//                    .studentName(studentRequest.getStudentName())
+//                    .studentDept(studentRequest.getStudentDept())
+//                    .build();
+//            studentRepository.save(s);
+//        }
         return camp;
     }
 
@@ -58,12 +65,21 @@ public class CampService {
     }
 
 
-    public CampOneResponse findOne(String id) {
+    public CampOneResponse findOne(Long campId, String userId) {
+        boolean isTakes = false;
+
         Camp camp = campRepository
-                .findById(Long.parseLong(id))
+                .findById(campId)
                 .orElseThrow();
-        return new CampOneResponse(camp);
+
+        Optional<Member> member = memberRepository.findById(userId);
+        List<Takes> takesList = member.get().getTakesList();
+        for(int i = 0 ; i < takesList.size(); ++i){
+            if(takesList.get(i).getCamp().getCamp_id() == campId) isTakes = true;
+        }
+
+
+        return new CampOneResponse(camp, isTakes);
     }
 
-//    public List<Student>
 }

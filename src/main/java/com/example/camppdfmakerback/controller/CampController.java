@@ -27,8 +27,8 @@ public class CampController {
         return ResponseEntity.ok(campService.findAll());
     }
 
-    @GetMapping("/camp/{id}")
-    public CampOneResponse getOneCampInfo(@PathVariable String id) {
-        return campService.findOne(id);
+    @GetMapping("/camp/{id}/{userId}")
+    public CampOneResponse getOneCampInfo(@PathVariable("id") Long campId , @PathVariable("userId")String userId) {
+        return campService.findOne(campId, userId);
     }
 }

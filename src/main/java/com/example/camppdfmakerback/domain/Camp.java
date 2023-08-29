@@ -16,16 +16,14 @@ import java.util.List;
 public class Camp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "camp_id")
+    private Long camp_id;
     private String campName;
     private String campImg;
     private String campSeason;
     private String campProf;
-
     private String startDate;
     private String endDate;
-
     @OneToMany(mappedBy = "camp")
-    private List<Student> studentList;
+    private List<Takes> takesList;
 }
