@@ -29,7 +29,6 @@ public class CampService {
     private final MemberRepository memberRepository;
     private final CampRepository campRepository;
     private final TakesRepository takesRepository;
-//    private final StudentRepository studentRepository;
 
     public Camp create(CampRequest campRequest){
         Camp camp = Camp.builder()
@@ -40,6 +39,7 @@ public class CampService {
                 .startDate(campRequest.getStartDate())
                 .endDate(campRequest.getEndDate())
                 .build();
+        campRepository.save(camp);
 //        List<StudentRequest> studentList = campRequest.getStudentList();
 //        for (StudentRequest studentRequest : studentList) {
 //            Student s = Student.builder()

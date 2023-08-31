@@ -25,6 +25,8 @@ public class GetProfileResponse {
     @Data
     @AllArgsConstructor
     public static class TakesDto {
+        private Long campId;
+        private String campImg;
         private String campName;
         private String campSeason;
         private String campProf;

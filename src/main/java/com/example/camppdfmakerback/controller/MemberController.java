@@ -40,10 +40,13 @@ public class MemberController {
     @GetMapping("/api/user/{userId}")
     public GetProfileResponse getProfile(@PathVariable("userId") String userId ){
         Optional<Member> member = memberRepository.findById(userId);
-        Long userIdLong = Long.parseLong(userId);
-        List<Takes> takes = takesRepository.findAllById(Collections.singleton(userIdLong));
+        List<Takes> takes = takesRepository.findByMemberSid(userId);
+        System.out.println(takes);
         List<GetProfileResponse.TakesDto> collect = takes.stream().map(o ->
-                new GetProfileResponse.TakesDto(o.getCamp().getCampName(),
+                new GetProfileResponse.TakesDto(
+                        o.getCamp().getCamp_id(),
+                        o.getCamp().getCampImg(),
+                        o.getCamp().getCampName(),
                         o.getCamp().getCampSeason(),
                         o.getCamp().getCampProf())).collect(Collectors.toList());
 
